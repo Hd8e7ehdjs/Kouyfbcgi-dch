@@ -1,0 +1,348 @@
+-- Configurando a interface no CoreGui
+local CoreGui = game:GetService("CoreGui")
+
+-- Criando a ScreenGui principal no CoreGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = CoreGui
+
+-- Criando a interface movível (DraggableFrame)
+local DraggableFrame = Instance.new("Frame")
+DraggableFrame.Parent = ScreenGui
+DraggableFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35) -- Cor cinza
+DraggableFrame.Size = UDim2.new(0, 40, 0, 40) -- Tamanho ajustado da interface
+DraggableFrame.Position = UDim2.new(0, 10, 0.5, -20) -- Posição ajustada para a esquerda
+DraggableFrame.BorderSizePixel = 0
+DraggableFrame.ZIndex = 2 -- Define um ZIndex alto para estar acima da tela branca
+
+-- Bordas arredondadas para o DraggableFrame
+local UICorner = Instance.new("UICorner")
+UICorner.CornerRadius = UDim.new(0, 10) -- Borda arredondada de 10 pixels
+UICorner.Parent = DraggableFrame
+
+-- Tornando o DraggableFrame arrastável
+DraggableFrame.Draggable = true
+DraggableFrame.Active = true
+DraggableFrame.Selectable = true
+
+-- Criando o botão de minimizar (MinimizeButton)
+local MinimizeButton = Instance.new("TextButton")
+MinimizeButton.Parent = DraggableFrame
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Botão vermelho
+MinimizeButton.Size = UDim2.new(0, 30, 0, 30) -- Tamanho ajustado do botão
+MinimizeButton.Position = UDim2.new(0.5, -15, 0.5, -15) -- Centraliza o botão no DraggableFrame
+MinimizeButton.Font = Enum.Font.SourceSans
+MinimizeButton.Text = "-"
+MinimizeButton.TextSize = 20 -- Tamanho do texto 20
+MinimizeButton.TextColor3 = Color3.new(1, 1, 1) -- Texto branco
+MinimizeButton.BorderSizePixel = 0
+MinimizeButton.ZIndex = 3 -- Define um ZIndex alto para o botão estar acima da tela branca
+
+-- Bordas arredondadas para o botão de minimizar
+local ButtonCorner = Instance.new("UICorner")
+ButtonCorner.CornerRadius = UDim.new(0, 10) -- Borda arredondada de 10 pixels
+ButtonCorner.Parent = MinimizeButton
+
+-- Criando a interface principal a ser minimizada (MainFrame)
+-- Lista de nomes proibidos (blacklist)
+local blacklist = {
+    "username",
+    "usernane",
+}
+
+-- Função para verificar se o jogador está na blacklist
+local function checkBlacklist(player)
+    for _, name in ipairs(blacklist) do
+        if player.Name == name then
+            player:Kick("You stupid idiot, you're on the Blacklist, you stupid bitch.")
+            return true
+        end
+    end
+    return false
+end
+
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+-- Verifica se o jogador que está executando o script está na blacklist
+local player = game:GetService("Players").LocalPlayer
+if checkBlacklist(player) then
+    return -- Se o jogador for expulso, para a execução do script
+end
+
+local UserInputService = game:GetService("UserInputService")
+local Workspace = game:GetService("Workspace")
+local CoreGui = game:GetService("CoreGui")
+
+-- Verifica se a interface já existe e a destrói
+local existingHub = CoreGui:FindFirstChild('AutoScamHub')
+if existingHub then
+    existingHub:Destroy()
+end
+
+-- Interface principal
+local Hub = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Content = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+local ActionClear = Instance.new("TextButton")
+local CopyAllButton = Instance.new("TextButton") -- Renomeado
+local CloseButton = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+local ClearUICorner = Instance.new("UICorner")
+local CopyAllUICorner = Instance.new("UICorner") -- UICorner para o botão "Copy All"
+local CloseUICorner = Instance.new("UICorner")
+local FeedbackLabel = Instance.new("TextLabel") -- Adiciona o feedback visual
+
+Hub.Name = 'AutoScamHub'
+Hub.Parent = CoreGui
+
+MainFrame.Name = 'MainFrame'
+MainFrame.Parent = Hub
+MainFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+MainFrame.Position = UDim2.new(0.5, -125, 0.5, -180)
+MainFrame.Size = UDim2.new(0, 250, 0, 300)
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+UICorner.Parent = MainFrame
+
+-- Content settings
+Content.Name = 'Content'
+Content.Parent = MainFrame
+Content.Active = true
+Content.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Content.BorderSizePixel = 0
+Content.Position = UDim2.new(0, 10, 0, 50)
+Content.Size = UDim2.new(1, -20, 1, -80) -- Ajustado para acomodar o feedback
+Content.CanvasSize = UDim2.new(0, 0, 0, 0)
+Content.ScrollBarThickness = 8
+
+-- UIListLayout settings
+UIListLayout.Parent = Content
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 10)
+
+-- Botão Clear
+ActionClear.Name = 'ActionClear'
+ActionClear.Parent = MainFrame
+ActionClear.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+ActionClear.Position = UDim2.new(0, 10, 0, 10)
+ActionClear.Size = UDim2.new(0, 70, 0, 30)
+ActionClear.Font = Enum.Font.SourceSans
+ActionClear.Text = "Clear"
+ActionClear.TextColor3 = Color3.fromRGB(255, 255, 255)
+ActionClear.TextSize = 20
+
+ClearUICorner.Parent = ActionClear
+
+-- Botão Copy All
+CopyAllButton.Name = "CopyAllButton"
+CopyAllButton.Parent = MainFrame
+CopyAllButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+CopyAllButton.Position = UDim2.new(0, 85, 0, 10)
+CopyAllButton.Size = UDim2.new(0, 80, 0, 30)
+CopyAllButton.Font = Enum.Font.SourceSans
+CopyAllButton.Text = "Copy All"
+CopyAllButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CopyAllButton.TextSize = 20
+
+CopyAllUICorner.Parent = CopyAllButton
+
+-- Botão Close
+CloseButton.Name = "CloseButton"
+CloseButton.Parent = MainFrame
+CloseButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+CloseButton.Position = UDim2.new(1, -40, 0, 10)
+CloseButton.Size = UDim2.new(0, 30, 0, 30)
+CloseButton.Font = Enum.Font.SourceSans
+CloseButton.Text = "X"
+CloseButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+CloseButton.TextSize = 20
+
+CloseUICorner.Parent = CloseButton
+
+-- Label de feedback no rodapé do MainFrame
+FeedbackLabel.Name = "FeedbackLabel"
+FeedbackLabel.Parent = MainFrame
+FeedbackLabel.BackgroundTransparency = 1
+FeedbackLabel.Position = UDim2.new(0, 0, 1, -30) -- No final do MainFrame
+FeedbackLabel.Size = UDim2.new(1, 0, 0, 20) -- Ajustado para ser menor
+FeedbackLabel.Font = Enum.Font.SourceSansBold -- Texto em negrito
+FeedbackLabel.Text = ""
+FeedbackLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Cor padrão do feedback
+FeedbackLabel.TextSize = 14
+FeedbackLabel.TextStrokeTransparency = 0.75 -- Adiciona um contorno para facilitar a leitura
+FeedbackLabel.Visible = false
+
+-- Tabela para armazenar os IDs das decals copiadas
+local decalIDs = {}
+
+-- Função para mostrar feedback temporário
+local function showFeedback(message)
+    FeedbackLabel.Text = message
+    FeedbackLabel.Visible = true
+    wait(3)  -- Mostra o feedback por 2 segundos
+    FeedbackLabel.Visible = false
+end
+
+-- Funções dos botões
+CopyAllButton.MouseButton1Click:Connect(function()
+    if #decalIDs == 0 then
+        showFeedback("All IDs copied!")
+        return
+    end
+
+    local combinedIDs = table.concat(decalIDs, ", ") -- Junta todos os IDs com vírgula
+    setclipboard(combinedIDs) -- Copia para a área de transferência
+    showFeedback("IDs das decals copiadas: " .. combinedIDs) -- Exibe feedback
+end)
+
+CloseButton.MouseButton1Click:Connect(function()
+    Hub:Destroy()
+end)
+
+-- Função para copiar todos os IDs das decals
+CopyAllButton.MouseButton1Click:Connect(function()
+    local allDecalIDs = {}
+    
+    for _, child in ipairs(Content:GetChildren()) do
+        if child:IsA("Frame") then
+            local image = child:FindFirstChildOfClass("ImageLabel")
+            if image then
+                local decalID = image.Image:match("(%d+)")
+                if decalID then
+                    table.insert(allDecalIDs, decalID)
+                end
+            end
+        end
+    end
+    
+    if #allDecalIDs > 0 then
+        setclipboard(table.concat(allDecalIDs, "\n")) -- Copia todos os IDs para a área de transferência
+        showFeedback("Todos os IDs copiados!") -- Feedback ao usuário
+    else
+        showFeedback("Nenhuma decal encontrada para copiar.") -- Feedback se não houver decals
+    end
+end)
+
+-- Funções de manipulação de decals
+local alreadySpying = {}
+local HTTPMain = "https://www.roblox.com/library/"
+local ToggleKey = Enum.KeyCode.Minus
+
+function copyText(input)
+    local clipboard = setclipboard
+    if clipboard then
+        pcall(clipboard, input)
+        showFeedback("ID copied!")  -- Exibe feedback no rodapé
+    end
+end
+
+-- Adiciona decals somente das bandeiras
+function addDecalToList(decalID, modelName)
+    if alreadySpying[decalID] then return end
+    alreadySpying[decalID] = true
+    
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(1, -8, 0, 75)
+    frame.BackgroundTransparency = 1
+
+    local image = Instance.new("ImageLabel", frame)
+    image.Size = UDim2.new(0, 73, 0, 73)
+    image.Image = decalID
+    image.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    image.BackgroundTransparency = 0
+
+    local description = Instance.new("TextLabel", frame)
+    description.Size = UDim2.new(1, -76, 1, 0)
+    description.Position = UDim2.new(0, 76, 0, 0)
+    description.BackgroundTransparency = 1
+    description.Font = Enum.Font.Gotham
+    description.Text = "Decal by [" .. modelName .. "]"
+    description.TextColor3 = Color3.fromRGB(255, 255, 255)
+    description.TextSize = 14
+    description.TextXAlignment = Enum.TextXAlignment.Left
+
+    local button = Instance.new("TextButton", image)
+    button.Size = UDim2.new(1, 0, 1, 0)
+    button.BackgroundTransparency = 1
+    button.Text = ""
+    button.MouseButton1Click:Connect(function()
+        copyText(decalID:match("(%d+)"))
+    end)
+
+    frame.Parent = Content
+    Content.CanvasSize = Content.CanvasSize + UDim2.new(0, 0, 0, 75 + 10)
+end
+
+-- Função que escaneia apenas as decals das bandeiras
+function scanDecals(part)
+    if part.Parent and part.Parent.Name == "Flag" then  -- Verifica se a decal está na bandeira
+        local model = part.Parent.Parent.Parent
+        if part.Texture and part.Texture ~= "" then
+            addDecalToList(part.Texture, model.Name)
+        end
+        part.Changed:Connect(function(property)
+            if property == "Texture" and part.Texture ~= "" then
+                addDecalToList(part.Texture, model.Name)
+            end
+        end)
+    end
+end
+
+function startScan()
+    for _, obj in pairs(Workspace:GetDescendants()) do
+        if obj:IsA("Decal") and obj.Name == "CustomFlagLeft" then  -- Só escaneia decals chamadas "CustomFlagLeft"
+            scanDecals(obj)
+        end
+    end
+end
+
+Workspace.DescendantAdded:Connect(function(descendant)
+    if descendant:IsA("Decal") and descendant.Name == "CustomFlagLeft" then
+        scanDecals(descendant)
+    end
+end)
+
+ActionClear.MouseButton1Click:Connect(function()
+    alreadySpying = {}
+    for _, child in pairs(Content:GetChildren()) do
+        if child:IsA("Frame") then
+            child:Destroy()
+        end
+    end
+    Content.CanvasSize = UDim2.new(0, 0, 0, 0)
+    showFeedback("Clean list!")  -- Exibe feedback no rodapé
+end)
+
+-- Inicia o escaneamento das decals das bandeiras quando o jogo carregar completamente
+startScan()
+
+-- Finaliza
+print("Decal logger loaded.")
+
+-- Lógica para minimizar a interface principal
+local isMinimized = false
+MinimizeButton.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    MainFrame.Visible = not isMinimized
+    MinimizeButton.Text = isMinimized and "+" or "-" -- Troca o texto do botão
+end)
+
+-- Garantir que a interface permaneça ativa ao longo do jogo
+local player = game.Players.LocalPlayer
+
+-- Conectar eventos de CharacterRemoving e CharacterAdded para garantir que a interface não desapareça
+player.CharacterRemoving:Connect(function()
+    ScreenGui.Enabled = true -- Mantém a interface habilitada ao morrer
+end)
+
+player.CharacterAdded:Connect(function()
+    ScreenGui.Enabled = true -- Garante que a interface esteja habilitada ao respawnar
+end)
+
+-- Inicializa a interface se o jogador já tiver um personagem
+if player.Character then
+    ScreenGui.Enabled = true -- Garante que a interface esteja habilitada na inicialização
+end
