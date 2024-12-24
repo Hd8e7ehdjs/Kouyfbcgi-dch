@@ -8,6 +8,8 @@ local bannedPlayers = {
     "renan_ricoooo",
     "Klinge_K",
     "rbxV1P3R",
+    "Knowledge99z",
+    "SlimDuffy",
 }
 
 -- Lista de ClientIds banidos
