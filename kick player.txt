@@ -7,7 +7,7 @@ local bannedPlayers = {
     "dcrtdftyftyu",
     "renan_ricoooo",
     "Klinge_K",
-    "rbxV1P3R",
+    "rbxV1P3",
     "Knowledge99z",
     "SlimDuffy",
 }
