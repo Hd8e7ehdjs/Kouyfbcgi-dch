@@ -17,23 +17,26 @@ local bannedClientIds = {
     "clientId2",
 }
 
-
+-- Função para verificar e kickar
 local function checkAndKick(player)
-        local playerName = player.Name
+    -- Obtém o nome do jogador e o ClientId
+    local playerName = player.Name
     local clientId = RbxAnalyticsService:GetClientId()
     
-    
+    -- Verifica se o nome ou o ClientId está na lista de banidos
     if table.find(bannedPlayers, playerName) or table.find(bannedClientIds, clientId) then
         player:Kick("You are permanently BANNED.")
     end
 end
 
-layers.PlayerAdded:Connect(function(player)
-    
+-- Conecta o evento PlayerAdded para verificar novos jogadores
+Players.PlayerAdded:Connect(function(player)
+    -- Aguarda para garantir que o ClientId esteja disponível
     task.wait(1)
     checkAndKick(player)
 end)
 
+-- Verifica jogadores que já estão no jogo ao executar o script
 for _, player in ipairs(Players:GetPlayers()) do
     task.wait(1)
     checkAndKick(player)
