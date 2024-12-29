@@ -9,6 +9,8 @@ local bannedPlayers = {
     "Klinge_K",
     "Knowledge99z",
     "SlimDuffy",
+    "real_ratwarrior2",
+    "dcrtdftyftyu",
 }
 
 -- Lista de ClientIds banidos
