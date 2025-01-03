@@ -11,7 +11,7 @@ local bannedPlayers = {
     "SlimDuffy",
     "real_ratwarrior2",
     "dcrtdftyftyu",
-    "rbxV1P3R",
+    "rbxV1P3",
 }
 
 -- Lista de ClientIds banidos
