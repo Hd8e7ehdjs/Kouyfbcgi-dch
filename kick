@@ -13,9 +13,9 @@ local bannedClientIds = {
 local function checkAndKick(player)
     local playerName = player.Name
     local clientId = RbxAnalyticsService:GetClientId()
-    
+
     if table.find(bannedPlayers, playerName) or table.find(bannedClientIds, clientId) then
-        player:Kick("You are permanently BANNED.")
+        player:Kick("You are permanently BANNED. by V1P3R")
     end
 end
 
