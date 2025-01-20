@@ -7,7 +7,7 @@ local bannedPlayers = {}
 -- Lista de ClientIds banidos
 local bannedClientIds = {
     "99dc9257-f72c-40ff-9efa-54de211c3064", -- Capo21900
-    "clientId2",
+    "16ce7c76-57cf-467e-b03a-97ac7e3dc927", -- Aesthetikbaddiegirl
 }
 
 local function checkAndKick(player)
