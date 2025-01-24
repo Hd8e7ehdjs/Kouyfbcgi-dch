@@ -28,3 +28,12 @@ for _, player in ipairs(Players:GetPlayers()) do
     task.wait(1)
     checkAndKick(player)
 end
+
+local StarterGui = game:GetService("StarterGui")
+
+StarterGui:SetCore("SendNotification", {
+    Title = "Join the Server",
+    Text = "Join the server to stay up to date with updates and be part of our community",
+    Duration = 10,
+    Button1 = "OK"
+})
