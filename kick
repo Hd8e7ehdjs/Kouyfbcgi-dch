@@ -8,6 +8,8 @@ local bannedPlayers = {}
 local bannedClientIds = {
     "99dc9257-f72c-40ff-9efa-54de211c3064", -- Capo21900
     "16ce7c76-57cf-467e-b03a-97ac7e3dc927", -- Aesthetikbaddiegirl
+    "001EE70C-48AC-4187-94E0-9A27AB88D287" -- mendingfilter
+
 }
 
 local function checkAndKick(player)
