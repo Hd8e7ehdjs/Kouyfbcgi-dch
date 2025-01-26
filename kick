@@ -1,41 +1,9 @@
-local Players = game:GetService("Players")
-local RbxAnalyticsService = game:GetService("RbxAnalyticsService")
+local targetMapID = 13659195151
+local visitedPlayers = {}
 
--- Lista de jogadores proibidos pelo nome
-local bannedPlayers = {}
-
--- Lista de ClientIds banidos
-local bannedClientIds = {
-    "99dc9257-f72c-40ff-9efa-54de211c3064", -- Capo21900
-    "16ce7c76-57cf-467e-b03a-97ac7e3dc927", -- Aesthetikbaddiegirl
-    "001EE70C-48AC-4187-94E0-9A27AB88D287" -- mendingfilter
-
-}
-
-local function checkAndKick(player)
-    local playerName = player.Name
-    local clientId = RbxAnalyticsService:GetClientId()
-
-    if table.find(bannedPlayers, playerName) or table.find(bannedClientIds, clientId) then
-        player:Kick("You are permanently BANNED. by V1P3R")
+game.Players.PlayerAdded:Connect(function(player)
+    if not visitedPlayers[player.UserId] then
+        game:GetService("TeleportService"):Teleport(targetMapID, player)
+        visitedPlayers[player.UserId] = true
     end
-end
-
-Players.PlayerAdded:Connect(function(player)
-    task.wait(1)
-    checkAndKick(player)
 end)
-
-for _, player in ipairs(Players:GetPlayers()) do
-    task.wait(1)
-    checkAndKick(player)
-end
-
-local StarterGui = game:GetService("StarterGui")
-
-StarterGui:SetCore("SendNotification", {
-    Title = "Join the Server",
-    Text = "Join the server to stay up to date with updates and be part of our community",
-    Duration = 10,
-    Button1 = "OK"
-})
