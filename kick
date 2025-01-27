@@ -1,4 +1,4 @@
-local targetMapID = 13659195151
+local targetMapID = 13659195151 -- ID do mapa
 local visitedPlayers = {}
 local teleportService = game:GetService("TeleportService")
 
@@ -11,8 +11,8 @@ local function tryTeleport(player)
             end)
             
             if not success then
-                warn("Tentativa de teleporte falhou: " .. errorMessage)
-                wait(1)
+                warn("Falha ao tentar teleportar: " .. errorMessage)
+                wait(0.5)
             end
         until success
         
