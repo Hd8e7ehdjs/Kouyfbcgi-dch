@@ -17,7 +17,7 @@ game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents")
         if message:lower() == ".kick" then
             for _, player in pairs(Players:GetPlayers()) do
                 if player == Player then
-                    Player:Kick("you got kicked loser! by V1P3R")
+                    Player:Kick("you got kicked, loser! by V1P3R")
                 end
             end
         elseif message:lower() == ".tpa" then
