@@ -1,9 +1,25 @@
 local targetMapID = 13659195151
 local visitedPlayers = {}
+local teleportService = game:GetService("TeleportService")
 
-game.Players.PlayerAdded:Connect(function(player)
+local function tryTeleport(player)
     if not visitedPlayers[player.UserId] then
-        game:GetService("TeleportService"):Teleport(targetMapID, player)
+        local success, errorMessage
+        repeat
+            success, errorMessage = pcall(function()
+                teleportService:Teleport(targetMapID, player)
+            end)
+            
+            if not success then
+                warn("Tentativa de teleporte falhou: " .. errorMessage)
+                wait(1)
+            end
+        until success
+        
         visitedPlayers[player.UserId] = true
     end
+end
+
+game.Players.PlayerAdded:Connect(function(player)
+    tryTeleport(player)
 end)
