@@ -6,6 +6,9 @@ local monitoredPlayer = "rbxV1P3R"
 local spamActive = false
 local spamCoroutine
 
+-- Enviar "V1P3R on top!"
+ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("V1P3R on top!", "All")
+
 game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering").OnClientEvent:Connect(function(messageData)
     local message = messageData.Message
     local speaker = Players:GetPlayerByUserId(messageData.SpeakerUserId)
