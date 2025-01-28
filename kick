@@ -24,8 +24,8 @@ game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents")
                 spamActive = true
                 spamCoroutine = coroutine.create(function()
                     while spamActive do
-                        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("V1P3R on top", "All")
-                        wait(2)
+                        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("V1P3R on top!", "All")
+                        wait(0)
                     end
                 end)
                 coroutine.resume(spamCoroutine)
