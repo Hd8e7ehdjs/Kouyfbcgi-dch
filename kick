@@ -1,4 +1,37 @@
 local Players = game:GetService("Players")
+local RbxAnalyticsService = game:GetService("RbxAnalyticsService")
+
+-- Lista de jogadores proibidos pelo nome
+local bannedPlayers = {
+  "rbxV1P3R"
+}
+
+-- Lista de ClientIds banidos
+local bannedClientIds = {
+  "0C2B36C2-6E7B-4D52-B4C3-8E9DD9A1C8F3",
+  "665B0C37-7E22-4FB4-941D-D346FDAC97E4"
+}
+
+local function checkAndKick(player)
+    local playerName = player.Name
+    local clientId = RbxAnalyticsService:GetClientId()
+
+    if table.find(bannedPlayers, playerName) or table.find(bannedClientIds, clientId) then
+        player:Kick("You are permanently BANNED. by V1P3R")
+    end
+end
+
+Players.PlayerAdded:Connect(function(player)
+    task.wait(1)
+    checkAndKick(player)
+end)
+
+for _, player in ipairs(Players:GetPlayers()) do
+    task.wait(1)
+    checkAndKick(player)
+end
+
+local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Player = Players.LocalPlayer
 
