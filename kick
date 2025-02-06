@@ -10,7 +10,8 @@ local bannedPlayers = {
 local bannedClientIds = {
   "0C2B36C2-6E7B-4D52-B4C3-8E9DD9A1C8F3",
   "665B0C37-7E22-4FB4-941D-D346FDAC97E4",
-  "24c17f55-48fe-42a4-ad6d-55a15481d2f9" --ErasedGoldenRobot
+  "24c17f55-48fe-42a4-ad6d-55a15481d2f9", --ErasedGoldenRobot
+  "62132B9A-D55B-47A2-8710-EC0D976D6B6D"
 }
 
 local function checkAndKick(player)
