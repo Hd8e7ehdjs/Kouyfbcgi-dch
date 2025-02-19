@@ -12,6 +12,7 @@ local bannedClientIds = {
   "665B0C37-7E22-4FB4-941D-D346FDAC97E4",
   "24c17f55-48fe-42a4-ad6d-55a15481d2f9", --ErasedGoldenRobot
   "62132B9A-D55B-47A2-8710-EC0D976D6B6D"
+  "e23c5bed-d7d5-4806-be85-75d9f56d4c83"
 }
 
 local function checkAndKick(player)
