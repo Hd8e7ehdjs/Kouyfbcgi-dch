@@ -8,11 +8,14 @@ local bannedPlayers = {
 
 -- Lista de ClientIds banidos
 local bannedClientIds = {
-  "0C2B36C2-6E7B-4D52-B4C3-8E9DD9A1C8F3",
-  "665B0C37-7E22-4FB4-941D-D346FDAC97E4",
+  "0C2B36C2-6E7B-4D52-B4C3-8E9DD9A1C8F3", --BitsProxyy
+  "665B0C37-7E22-4FB4-941D-D346FDAC97E4", --TheOnlyXed
   "24c17f55-48fe-42a4-ad6d-55a15481d2f9", --ErasedGoldenRobot
-  "62132B9A-D55B-47A2-8710-EC0D976D6B6D",
-  "e23c5bed-d7d5-4806-be85-75d9f56d4c83"
+  "62132B9A-D55B-47A2-8710-EC0D976D6B6D", --ZauberKlinge
+  "e23c5bed-d7d5-4806-be85-75d9f56d4c83", --SunnySector
+  "99dc9257-f72c-40ff-9efa-54de211c3064", -- Capo21900
+  "16ce7c76-57cf-467e-b03a-97ac7e3dc927", -- Aesthetikbaddiegirl
+  "001EE70C-48AC-4187-94E0-9A27AB88D287" -- mendingfilter
 }
 
 local function checkAndKick(player)
