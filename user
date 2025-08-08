@@ -1,1 +1,87 @@
+local player = game:GetService("Players").LocalPlayer
+local groupId = 88683216 -- ID do grupo Decal-Logger-Hub
 
+-- Verifica se o jogador está no grupo
+local function isInGroup()
+    local success, result = pcall(function()
+        return player:IsInGroup(groupId)
+    end)
+    return success and result
+end
+
+-- Se NÃO estiver no grupo, mostra a interface
+if not isInGroup() then
+    local ScreenGui = Instance.new("ScreenGui")
+    local Frame = Instance.new("Frame")
+    local TextLabel = Instance.new("TextLabel")
+    local GroupButton = Instance.new("TextButton")
+
+    -- Configuração no CoreGui para persistir após morte
+    ScreenGui.Parent = game:GetService("CoreGui")
+    ScreenGui.Name = "GroupVerificationUI"
+    ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    ScreenGui.ResetOnSpawn = false -- Impede que seja destruído ao respawnar
+
+    -- Frame principal (60% da tela)
+    Frame.Parent = ScreenGui
+    Frame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    Frame.Size = UDim2.new(0.6, 0, 0.6, 0)
+    Frame.Position = UDim2.new(0.2, 0, 0.2, 0)
+    Frame.Active = false
+    Frame.Draggable = false
+
+    -- Arredondamento do Frame
+    local frameCorner = Instance.new("UICorner")
+    frameCorner.CornerRadius = UDim.new(0.1, 0)
+    frameCorner.Parent = Frame
+
+    -- Texto de aviso
+    TextLabel.Parent = Frame
+    TextLabel.Text = "You can only use the script if you are a member of the Roblox group\n\nClick the button below to copy the group link"
+    TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TextLabel.BackgroundTransparency = 1
+    TextLabel.Size = UDim2.new(0.9, 0, 0.6, 0)
+    TextLabel.Position = UDim2.new(0.05, 0, 0.1, 0)
+    TextLabel.TextWrapped = true
+    TextLabel.Font = Enum.Font.SourceSans
+    TextLabel.TextScaled = true
+
+    -- Botão do Grupo (com bordas arredondadas)
+    GroupButton.Parent = Frame
+    GroupButton.Name = "GroupLinkButton"
+    GroupButton.Text = "COPY GROUP LINK"
+    GroupButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    GroupButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    GroupButton.Size = UDim2.new(0.6, 0, 0.2, 0)
+    GroupButton.Position = UDim2.new(0.2, 0, 0.7, 0)
+    GroupButton.Font = Enum.Font.SourceSans
+    GroupButton.TextScaled = true
+
+    -- CORREÇÃO: Arredondamento das bordas do botão
+    local buttonCorner = Instance.new("UICorner")
+    buttonCorner.CornerRadius = UDim.new(0.2, 0) -- Arredondamento mais pronunciado
+    buttonCorner.Parent = GroupButton
+
+    -- Adicionando efeito visual ao botão
+    GroupButton.MouseEnter:Connect(function()
+        GroupButton.BackgroundColor3 = Color3.fromRGB(220, 0, 0)
+    end)
+    
+    GroupButton.MouseLeave:Connect(function()
+        GroupButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    end)
+
+    -- Função que executa ao clicar no botão
+    GroupButton.MouseButton1Click:Connect(function()
+        setclipboard("https://www.roblox.com/groups/88683216/Decal-Logger-Hub")
+        game:Shutdown() -- Fecha o jogo
+    end)
+
+    -- Expande após 1 minuto (sem mostrar contador)
+    delay(60, function()
+        Frame.Size = UDim2.new(1, 0, 1, 0)
+        Frame.Position = UDim2.new(0, 0, 0, 0)
+        TextLabel.Text = "You MUST join the group to use this script!\n\nThe script will not work until you join the group"
+        TextLabel.TextColor3 = Color3.fromRGB(255, 80, 80)
+    end)
+end
